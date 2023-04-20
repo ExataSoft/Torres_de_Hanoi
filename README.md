@@ -1,4 +1,16 @@
 # Torres de Hanoi | Javascript. 
+
+*********************************************** 
+* Script - Torres de Hanoi em Javascript.     * 
+* Autor: Prof. Marcelo Brito.                 * 
+* Data : 27/03/2023                           * 
+* Sobre: script reproduz o famoso brinquedo,  * 
+*        Torres de Hanoi, inventado pelo      *
+*        matemático francês Edouard Lucas.    *
+*        Usa um algoritmo recursivo em        * 
+*        em javascrit para a solução.         * 
+*********************************************** 
+
  O Jogo Torres de Hanói é também conhecido como "O Quebra-cabeças do Fim do Mundo".
  
  Foi inventado e vendido como brinquedo, no ano de 1883, pelo matemático francês Edouard Lucas.
