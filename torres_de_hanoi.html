@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content= "width=device-width, initial-scale=1.0"> 
+  <title>Torres de Hanoi | Javascript.</title>
+	<meta name="description" content="Torre de Hanoi é um  famoso jogo de Matemática. Consiste numa base contendo três hastes. Em uma são colocados discos de cima para baixo.">
+	<meta name="keywords" content="torres de hanoi,torres de hanoi javascript,torres de hanoi algoritmo,torres de hanoi c++,torres de hanoi java,torres de hanoi juego online,torres de hanoi recursividad,torres de hanoi solución,torres de hanoi python,torres de hanoi leyenda,torre hanoi,torre de hanói,torre de hanoi noas,totalmente demais hanoi hanoi,torres de hanoi c,torres de hanoi recursividad c,torres de hanoi recursivo c,funcion torres de hanoi c,torres de hanoi en c sin recursividad,torres de hanoi con pilas,torres de hanoi online,torres de hanoi">
+	<meta name="copyright" content="free">
+	<meta name="author" content="Prof. Marcelo de Brito Castro">
+	<meta name="email" content="profmarcelobc@gmail.com">
+	<meta http-equiv="content-language" content="PT">
+	<meta name="Charset" content="UTF-8">
+</head>  
+<body style="background-color:aqua">
+    <div style="text-align:center;position:relative;top:auto;left:50%;transform:translate(-50%,0);border-width:5px;border-style:ridge;width:720px;height:auto">
+    <pre style="color:rgb(40,0,53);font-weight:1000;font-size: 10px">     
+  _____                     _  _               _  
+ |_   _|__ _ _ _ _ ___ ___ | || |__ _ _ _  ___(_) 
+   | |/ _ \ '_| '_/ -_|_-< | __ / _` | ' \/ _ \ | 
+   |_|\___/_| |_| \___/__/ |_||_\__,_|_||_\___/_| 
+                                    by Marcelo Brito.     
+   </pre>
+   <a style="font-size: 14px;font-weight:bolder" href="https://www.exatasoft.com" target="_blank">Ir para ⇨ Página Principal</a>
+   <span>&ensp;&ensp;</span>  
+   <a style="font-size: 14px;font-weight:bolder" href="https://pt.quora.com/profile/Marcelo-Brito-31" target="_blank">Acesse ⇨ Quora </a>   
+   </div>   
+   <H1 style="align:center;text-align:center;font-size: 16px">Torres de Hanoi | Javascript.</H1>    
+   <div id="painel">
+      <style> input[type=number]::-webkit-inner-spin-button 
+                                  {opacity: 1}
+      </style>  
+      <label id="ln" for="n"></label>
+      <input id="n">
+      <label id="lv" for="v"></label>
+      <input id="v">
+      <span>mv/s</span>
+      <span>&emsp;&ensp;Som:</span>
+      <button id="som"></button><br><br>
+      <span   id="msg"></span>  
+      <button id="btn"></button>
+      <span>Restaure ⇨</span> 
+      <button id="btr"></button>
+   </div><br>
+   <div id="hanoi"></div><br>
+   <div id="descricao" style="position:absolute;top:auto;left:50%;transform:translate(-50%,0);text-align:justify;border-width:5px;border-style:ridge;overflow:auto;width:720px;height:74px" >  
+     <h2 style="color:rgb(0,0,255);font-size: 14px;text-align:center">Torres de Hanoi | Descrição do Jogo</h2>
+     <div style="color:rgb(0,0,0);font-weight:600;font-size:14px;text-align:justify">
+      <p>O Jogo Torres de Hanói é também conhecido como "O Quebra-cabeças do Fim do Mundo".</p>
+      <p>Foi inventado e vendido como brinquedo, no ano de 1883, pelo matemático francês Edouard Lucas.</p>
+      <p>As Torres de Hanoi é um jogo estratégico que pode contribuir para o desenvolvimento do raciocínio, planejamento e resolução de problemas.</p> 
+      <p>O jogo é exibido como uma base onde estão dispostas três hastes(pinos) na posição vertical.</p> 
+      <p>No pino de Origem (o central), temos uma sequência de discos com ordem crescente de diâmetro, de cima para baixo.</p> 
+      <p>O objetivo é passar todos os discos para o pino de Destino (o último) com a ajuda do pino Auxiliar (o primeiro)</p>
+      <p>De modo que no momento da transferência o pino de maior diâmetro nunca fique sobre o de menor diâmetro.</p> 
+      <p>O jogo fica mais difícil e demorado à medida que o número de discos aumentam.</p>
+      <p>O número mínimo de movimentos para a solução é igual a  2ⁿ - 1, onde n é o número de discos.</p> 
+      <p>Exemplo: Para n=3 discos, número mínimo = 2³ - 1 = 8 - 1 = 7 movimentos.</p>
+      <p>Nesta página, seu computador irá solucionar esse jogo no menor número possível de movimentos.</p>
+      <p>É só você escolher o número de discos [3 a 20], a velocidade [1 a 200] movimentos/segundos e executar.</p>
+      <p>&emsp;Boa diversão!</p> 
+      <p>&emsp;Prof. Marcelo Brito.</p>
+     </div>
+   </div>  
+</body>
+<!--
+*********************************************** 
+* Script - Torres de Hanoi em Javascript.     * 
+* Autor: Prof. Marcelo Brito.                 * 
+* Data : 27/03/2023                           * 
+* Sobre: script reproduz o famoso brinquedo,  * 
+*        Torres de Hanoi, inventado pelo      *
+*        matemático francês Edouard Lucas.    *
+*        Usa um algoritmo recursivo em        * 
+*        javascrit para a solução.            * 
+*********************************************** 
+-->         
+<script>   
+const SomFundo = new Audio('/files/SomFundo.mp3');
+const som_ligado='🔉';     
+const som_desligado='🔈';      
+var som = 'desligado';    
+var rotulo='Iniciar';
+var op;
+var ndi   = 5;
+var ndmin = 3;
+var ndmax = 20; 
+var vi    = 1;
+var vmin  = 1;
+var vmax  = 200;
+
+function Alt_Som()
+{ var elem = document.getElementById('som');
+  if(som==='desligado')
+  {elem.innerHTML=som_ligado;SomFundo.currentTime=15;SomFundo.play();som='ligado';}
+  else   
+  if(som==='ligado')
+  {elem.innerHTML=som_desligado;SomFundo.pause();SomFundo.currentTime=15;som='desligado';};   
+}     
+     
+function Cria_body()
+{
+  
+  var htm; 
+  var elem;
+
+  htm  = "color:blue;";
+  htm += "text-align:center;";
+  htm += "font-weight:bolder;";
+  htm += "font-size: 14px;";
+  htm += "position:relative;top:auto;";   
+  htm += "left:50%;transform:translate(-50%,0);";
+  htm += "border-width:5px;border-style:ridge;";
+  htm += "width:500px;height:auto";
+  
+  elem=document.getElementById('painel');
+  elem.style=htm;
+
+  htm  = "Discos ["+ndmin.toString();
+  htm += " a "+ndmax.toString()+"]:";
+
+  elem=document.getElementById('ln');
+  elem.innerHTML=htm;
+
+  elem=document.getElementById('n');
+  elem.type="number";
+  elem.onchange=function(){Alt_NDisc();};
+  elem.min=ndmin;
+  elem.max=ndmax;
+  elem.value=ndi;
+  elem.step=1;
+  elem.size=1;
+  htm  = "font-weight:bolder;";
+  htm += "font-size: 14px;";
+  htm += "margin-right: 20px;";
+  elem.style = htm; 
+
+  htm =  "Velocidade ["+vmin.toString();
+  htm += " a "+vmax.toString()+"]:";
+
+  elem=document.getElementById('lv');
+  elem.innerHTML=htm;
+
+  elem=document.getElementById('v');
+  elem.type="number";
+  elem.onchange=function(){Alt_Veloc();};
+  elem.min=vmin;
+  elem.max=vmax;
+  elem.value=vi;
+  elem.step=1;
+  elem.size=1;   
+  htm  = "font-weight:bolder;";
+  htm += "font-size: 14px;";
+  elem.style = htm;
+  
+  htm ="font-size:14px;margin-right:5px;"; 
+  elem=document.getElementById('msg');
+  elem.style=htm; 
+ 
+  htm = som_desligado;
+  elem=document.getElementById('som');
+  elem.innerHTML=htm;
+  elem.name="button";
+  elem.type="button";   
+  elem.onclick=function(){Alt_Som();};
+
+  htm = rotulo;
+  elem=document.getElementById('btn');
+  elem.innerHTML=htm;
+  elem.name="button";
+  elem.type="button";   
+  elem.onclick=function(){Executa();};
+  elem.style="margin-right: 95px;";
+  
+  htm = "Restaurar";
+  elem=document.getElementById('btr');
+  elem.innerHTML=htm;
+  elem.name="button";
+  elem.type="button";
+  elem.onclick=function(){window.location.reload(true);};
+  elem.style="margin-left: 5px;";  
+  
+  
+  htm  = "color:black;align:center;";
+  htm += "text-align:center;";
+  htm += "font-weight:bolder;";
+
+  elem=document.getElementById('hanoi');
+  elem.style=htm;
+}
+Cria_body();
+
+function Iniciar()
+{ 
+  var timer;
+  var continua;
+  var nd;
+  var pi;   //Pino Inicial.
+  var pf;   //Pino Final.
+  var pt;   //Pino Temporário.
+  var toph; //Topo ou última posição dam Matriz H. 
+  var L;
+  var A;
+  var nm; 
+  var m; 
+  var mch;    
+  var intervalo; 
+  var titulo;
+  var lt; 
+  var inf;
+  var tempo;
+  var unidade;
+  var linf; 
+  var H;
+  var T;
+  var Q;
+
+
+function inicializaH()
+ {
+  i = 0;
+  while(i<nm)
+  {
+    H[i]= new Array(2);
+    i++; 
+  }  
+}    
+
+function inicializaT()
+      {
+        var i = 0;
+        while(i<3)
+         {
+            T[i]= new Array(nd+1);
+            i++; 
+         }  
+        i=0;
+        while(i<3)
+         { var j=0;
+           while(j<nd)
+            {
+              if(i===pi-1)
+                   T[i][j]=j+1;
+              else T[i][j]=0;
+              j++; 
+            }
+           T[i][nd]=nd+1; 
+           i++; 
+        }  
+      }  
+
+
+function inicializaQ()
+ {
+  i = 0;
+  while(i<A)
+  {
+    Q[i]= new Array(L);
+    i++; 
+  }  
+ 
+  i=0;
+  while(i<A)
+  { j=0;
+    while(j<L)
+      {
+        Q[i][j]='&ensp;';
+        j++; 
+      }
+    i++; 
+  }
+ }
+  function Inicializar_Ambiente()
+   { var elem = document.getElementById('msg');
+     elem.innerHTML = mudrot(rotulo)+' ⇨'; 
+     nd = Number(document.getElementById('n').value); 
+     L=88+4*(nd-3);  
+     A=15+(nd-3); 
+     nm = Math.pow(2,nd)-1;
+     pi = 2;
+     pf = 3;
+     pt = 1;
+     toph=-1;
+     H = new Array(nm);
+     T = new Array(3);
+     Q = new Array(A);
+     inicializaH();
+     inicializaT();
+     inicializaQ(); 
+     function MoveHanoi(n,pi,pf,pt) 
+      { if(n)
+         {
+           MoveHanoi(n-1,pi,pt,pf);
+           toph++;
+           H[toph][0]=pi;
+           H[toph][1]=pf;
+           MoveHanoi(n-1,pt,pf,pi);
+         }   
+      }
+     MoveHanoi(nd,pi,pf,pt);
+     m=0;
+     mch='█';
+     lch='■'; 
+     hch='▀';
+     veloc= Number(document.getElementById('v').value);
+     intervalo = (1/veloc); //em segundos
+     titulo = "[ Torres de Hanoi - By prof. Marcelo Brito ]";
+     lt =titulo.length; 
+     inf =  "[Número de Discos = "+nd.toString()+"] ";
+     tempo= nm*intervalo;
+   
+     if(tempo<60) { unidade="segundos";}
+     
+     if(tempo>59) { tempo=tempo/60;
+                    unidade="minutos";
+                    if(tempo===1) unidade="minuto";  
+                    if(tempo>59) 
+                      { tempo=tempo/60;
+                        unidade="horas";
+                        if(tempo===1) unidade="hora";
+                        if(tempo>=24){ tempo=tempo/24;
+                                       unidade="dias";
+                                       if(tempo===1) unidade="dia";
+                                     }        
+             
+                      }
+     
+                  }  
+     
+     
+    
+     inf += "[Finalizar ≈ "+tempo.toFixed(2).toString()+" "+unidade+"] ";
+     inf += "[Número Mínimo de Movimentos = "+nm.toString()+"]";
+     linf =inf.length; 
+
+   } 
+
+ function ImprimeString(s,x,y)
+  {
+    var i=0;
+    var n=s.length;
+    while(i<n)
+     {
+       Q[y][x+i]=s[i];
+       i++;
+     }
+  }
+
+ function ImprimeChar(c,n,x,y,f)
+  {
+    var i=0;
+    while(i<n)
+     { if(f)
+        Q[y][x+i]=c;
+        else Q[y+i][x]=c;
+       i++;
+     }
+  }                    
+
+ function ImprimeDisco(d,x,y)
+{
+  var i=0;
+  var c1='■';
+  var c2='█'; 
+  var n=2*d+1;
+  while(i<n)
+  { var c=c1;
+    if(i===d){c=c2;}
+    Q[y+1][x+i-d]=c;
+    i++;
+  }
+}
+ 
+ function ImprimePinos()
+  {
+    var p=0;
+    var k=Math.floor(L/4); 
+    var y=A-2-(nd+2);
+    while(p<3)
+     { var d=0;
+       var x=(p+1)*k;
+       var q=p+1;
+       if(q===pi)
+          ImprimeString("Origem",x-3,y-1);
+       if(q===pf)
+          ImprimeString("Destino",x-3,y-1);
+       if(q===pt)
+          ImprimeString("Auxiliar",x-3,y-1);        
+       ImprimeChar(q.toString()[0],1,x,y,1);
+       ImprimeChar(q.toString()[0],1,x,y,1);
+       ImprimeDisco(0,x,y);
+       while(d<nd)
+        {
+          ImprimeDisco(T[p][d],x,y+d+1);
+          d++;
+        }
+       ImprimeDisco(0,x,y+d+1); 
+       p++;
+     }
+  }                    
+                  
+ function pega_pos_disco(p)
+  { var i=0;
+    while(i<nd)
+     {
+       if(T[p][i]) break;
+       i++;
+     } 
+    return i;
+   }
+
+ function Move(pi,pf)
+  { pi--;pf--;
+    ki = pega_pos_disco(pi);
+    kf = pega_pos_disco(pf);
+    di=T[pi][ki];
+    df=T[pf][kf];
+    if(di<df)
+     {
+       T[pi][ki]=0;
+       T[pf][kf-1]=di;
+     }   
+   }
+
+ function Hanoi()
+  { 
+     if(op===-1){ rotulo='Reiniciar';
+                 //var elem = document.getElementById('msg');
+                 //elem.innerHTML = mudrot(rotulo)+' ⇨'; 
+                 clearInterval(timer);             
+                }
+     else  
+     if(op>0)
+     { if(op>1&&op<3)op=0;
+       inicializaQ(); 
+       ImprimeChar(hch,L,0,0,1);
+       ImprimeString(titulo,Math.round((L-lt)/2),1);
+       var msg='';
+       if(m > 0)
+         { var a=H[m-1][0]; var b=H[m-1][1];
+           msg=m.toString()+"º Movimento: "+a.toString()+" para "+b.toString();
+         };
+
+       if(m === nm)   
+         {msg="Finalizado em "+nm.toString()+" movimentos !!!";};
+        
+       var lmsg = msg.length;
+       ImprimeString(msg,Math.round((L-lmsg)/2),5);
+       ImprimeString(inf,Math.round((L-linf)/2),3);
+       ImprimeChar(lch,L,0,2,1);
+       ImprimeChar(mch,L,0,A-1,1);
+       ImprimeChar(mch,A,0,0,0);
+       ImprimeChar(mch,A,L-1,0,0);
+
+       ImprimePinos();
+      
+       if(m<nm) {Move(H[m][0],H[m][1]);} 
+       var i=0; 
+       var tab='';
+       document.getElementById('hanoi').innerHTML=tab;
+       var l='<pre style="color:rgb(0,10,50);margin: -1px;letter-spacing: -2px;" >';  
+       while(i<A)
+        {     
+          l+='<p style="margin: -1px;letter-spacing: -2px;" >';  
+          var j=0;
+          while(j<L)
+           { var x = Q[i][j]; 
+             l=l+x.toString();
+             j++;
+            } 
+          l=l+'</p>';
+          tab=tab+l;
+          l='';
+          i++;
+        }
+       tab+='</pre>';
+       document.getElementById('hanoi').innerHTML+=tab;
+       m++; 
+       if(m === nm+1)
+         { op=-1;
+           rotulo='Reiniciar';
+           var elem = document.getElementById('msg');
+           elem.innerHTML = mudrot(rotulo)+' ⇨'; 
+         }
+      
+     }
+   document.getElementById('btn').innerHTML=rotulo;
+   if(nd!=Number(document.getElementById('n').value))
+       Altera_NDisc(); 
+   if(veloc!=Number(document.getElementById('v').value))
+       Altera_Veloc(); 
+  }
+ 
+ if(op>1)
+  { 
+    Inicializar_Ambiente();
+    Hanoi(); 
+    timer= setInterval(Hanoi,Math.round(intervalo*1000*0.9));
+  }
+}
+
+function Alt_NDisc()
+{
+  op=-1;
+  var elem = document.getElementById('n');
+  nw = Number(elem.value); 
+  var msg="Reinicie p/ "+nw.toString()+" discos ⇨";
+  if(nw>ndmax)
+   { document.getElementById('n').value=ndmax; 
+     msg="Reinicie p/ número Máximo de "+ndmax.toString()+" discos ⇨";
+   }
+  
+  elem = document.getElementById('msg');
+  elem.innerHTML=msg; 
+}
+
+function Alt_Veloc()
+{
+  op=-1;
+  var elem = document.getElementById('v');
+  vw = Number(elem.value); 
+  var msg="Reinicie p/ velocidade "+vw.toString()+" ⇨";
+  if(vw>vmax)
+   { document.getElementById('v').value=vmax; 
+     msg="Reinicie p/ velocidade Máxima "+vmax.toString()+" ⇨";
+   }
+  elem = document.getElementById('msg');
+  elem.innerHTML=msg; 
+}
+
+function mudrot(rotulo)
+{
+ if(rotulo==='Parar')     novo='Pare';
+ if(rotulo==='Continuar') novo='Continue';
+ if(rotulo==='Executar' ) novo='Execute';
+ if(rotulo==='Reiniciar') novo='Reinicie';
+ return novo;
+}
+
+function Executa()
+{ var elem = document.getElementById('btn');
+  rotulo = elem.innerHTML;
+  if(rotulo==='Parar')
+       {rotulo='Continuar';op=0;}
+  else
+  if(rotulo==='Continuar')
+       {rotulo='Parar';op=1;}
+  else
+  if(rotulo==='Executar')
+       {rotulo='Parar';op=1;}
+  else
+  if(rotulo==='Iniciar')
+       {rotulo='Executar';op=2;}
+  else
+  if(rotulo==='Reiniciar')
+       {rotulo='Executar';op=2;}
+  elem.innerHTML=rotulo;
+  elem = document.getElementById('msg');
+  elem.innerHTML=mudrot(rotulo)+' ⇨'; 
+  if(op>1)Iniciar();  
+}
+  
+function Principal()
+{ var userAgent = navigator.userAgent.toLowerCase();
+  if(userAgent.search(/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i)!= -1)
+      document.getElementById('painel').innerHTML='Não executa em dispositivo móvel!';
+  else Executa();                
+}
+  
+Principal();  
+</script>
+</html>
