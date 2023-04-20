@@ -34,9 +34,9 @@
  
  É só você escolher o número de discos [3 a 20], a velocidade [1 a 200] movimentos/segundos e executar.
  
-  Boa diversão! 
+Boa diversão! 
  
-      Prof. Marcelo Brito.
+Prof. Marcelo Brito.
       
 ## Verifique Online:
    https://exatasoft.com/torres_de_hanoi.html
