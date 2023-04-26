@@ -1,4 +1,9 @@
 # Torres de Hanoi | Javascript. 
+<p align="center">
+<img src="https://repository-images.githubusercontent.com/630457265/8f8e0f02-f489-4ff0-ae35-a8fb53f63a36" alt="Torres de Hanoi | Javascript."/>
+<p/>
+
+<h4 align="center">O Jogo Torres de Hanói é também conhecido como "O Quebra-cabeças do Fim do Mundo".</h4>
 
 ## Descrição - Script
 
